@@ -1,0 +1,31 @@
+---
+galaxy_info:
+  role_name: selenium-grid
+  author: Max Barrass
+  description: Setup Selenium Grid to test your services.
+  company: aem.design
+  issue_tracker_url: https://github.com/aem-design/ansible-role-aem-toughday/issues
+  license: Apache 2.0
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+    - name: EL
+      versions:
+        - 7
+
+  galaxy_tags:
+    - aem
+    - cms
+    - web
+    - aemdesign
+
+dependencies:
+  - aem_design.docker_container

@@ -1,0 +1,35 @@
+---
+
+- name: set facts
+  set_fact:
+    role_comment: "( {{ docker_container_name | default('selenium-grid') }} )"
+  tags:
+    - always
+
+- name: ensure container is started {{ role_comment }}
+  include_role:
+    name: aem_design.docker_container
+  vars:
+    env:
+      GRID_TIMEOUT: "{{ service_selenium_grid_timeout | default(10) }}"
+      TZ: "{{ docker_timezone }}"
+  tags:
+    - docker-container
+
+- name: update host network iptables {{ role_comment }}
+  include_role:
+    name: aem_design.config_iptables
+  tags:
+    - host-config
+
+- name: wait until service is ready {{ role_comment }}
+  uri:
+    url: "http://{{ service_selenium_grid_host }}:{{ service_selenium_grid_http_port }}/wd/hub/status"
+    return_content: true
+    timeout: 300
+  register: service_console
+  until: (service_console.content.find("Hub has capacity") != -1) or (service_console.content.find("No spare hub capacity") != -1)
+  delay: "{{ wait_delay | default(5) }}"
+  retries: 360
+  tags:
+    - docker-container
