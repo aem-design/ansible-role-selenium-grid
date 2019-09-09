@@ -42,7 +42,6 @@ Available variables are listed below, along with default values (see `defaults/m
 This role depends on roles:
  
 - `aem_design.docker_container`
-- `aem_design.config_iptables`
 
 ## Example Playbook
 
