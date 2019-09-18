@@ -2,14 +2,35 @@
 - name: Converge
   hosts: all
   become: true
+  vars:
+    local_role_name: "ansible-role-selenium-grid"
+    role_name: "{% if lookup('env','ROLE_NAME_FULL') %}{{ lookup('env','ROLE_NAME_FULL') }}{% else %}{{ local_role_name }}{% endif %}"
 
   pre_tasks:
-    - name: Update apt cache.
+    - name: update apt cache.
       apt: update_cache=yes cache_valid_time=600
       when: ansible_os_family == 'Debian'
 
+    - name: get docker host ip
+      become: yes
+      shell: |
+        set -o pipefail
+        /sbin/ip route | awk '/default/ { print $3 }'
+      args:
+        executable: /bin/bash
+      register: dockerhost_ip
+      changed_when: false
+
   roles:
     - {
-      role: aem_design.selenium_grid,
+      role: "{{ role_name }}",
+      service_selenium_grid_host: "{{ dockerhost_ip.stdout }}",
       debug_hide: false
     }
+
+  post_tasks:
+    - name: remove new container
+      docker_container:
+        name: "{{ docker_container_name }}"
+        state: absent
+        force_kill: true

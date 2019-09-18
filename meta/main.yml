@@ -26,6 +26,3 @@ galaxy_info:
     - cms
     - web
     - aemdesign
-
-dependencies:
-  - aem_design.docker_container

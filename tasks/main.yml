@@ -7,15 +7,13 @@
     - always
 
 - name: ensure container is started {{ role_comment }}
-  include_role:
-    name: aem_design.docker_container
-  vars:
-    docker_container_name: "{{ docker_container_name }}"
-    docker_image: "{{ docker_image }}"
-    docker_image_tag: "{{ docker_image_tag }}"
+  docker_container:
+    name: "{{ docker_container_name }}"
+    image: "{{ docker_image }}{% if docker_image %}:{% endif %}{{ docker_image_tag }}"
+    published_ports: "{{ docker_published_ports }}"
     env:
-      GRID_TIMEOUT: "{{ service_selenium_grid_timeout | default(10) }}"
       TZ: "{{ docker_timezone }}"
+      GRID_TIMEOUT: "{{ service_selenium_grid_timeout | default(10) }}"
   tags:
     - docker-container
 
