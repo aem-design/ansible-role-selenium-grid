@@ -31,10 +31,6 @@ Available variables are listed below, along with default values (see `defaults/m
 | docker_published_ports          	|          	|                                                                   	|                                  	|
 |                                 	|          	| - "0.0.0.0:{{ service_selenium_grid_http_port }}:4444/tcp"        	|                                  	|
 |                                 	|          	|                                                                   	|                                  	|
-| iptable_rules                   	|          	|                                                                   	|                                  	|
-|                                 	|          	| - port: "{{ service_selenium_grid_http_port | default('4444') }}" 	|                                  	|
-|                                 	|          	| comment: "{{ docker_container_name }}_port"                       	|                                  	|
-|                                 	|          	|                                                                   	|                                  	|
 | wait_delay                      	|          	| 1                                                                 	| how long to wait between retries 	|
 
 ## Dependencies
