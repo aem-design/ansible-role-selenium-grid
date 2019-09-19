@@ -27,10 +27,3 @@
       service_selenium_grid_host: "{{ dockerhost_ip.stdout }}",
       debug_hide: false
     }
-
-  post_tasks:
-    - name: remove new container
-      docker_container:
-        name: "{{ docker_container_name }}"
-        state: absent
-        force_kill: true
