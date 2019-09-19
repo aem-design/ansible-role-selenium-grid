@@ -17,7 +17,7 @@
   tags:
     - docker-container
 
-- name: wait until service is ready {{ role_comment }}
+- name: wait until service is ready {{ role_comment }} http://{{ service_selenium_grid_host }}:{{ service_selenium_grid_http_port }}/wd/hub/status
   uri:
     url: "http://{{ service_selenium_grid_host }}:{{ service_selenium_grid_http_port }}/wd/hub/status"
     return_content: true
