@@ -66,6 +66,7 @@
       docker_container:
         docker_host: "unix://tmp/docker.sock"
         name: "{{ item }}"
+        force_kill: "true"
         state: "absent"
       loop:
         - "{{ test_node_name_firefox }}"
