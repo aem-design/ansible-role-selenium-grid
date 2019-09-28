@@ -60,14 +60,14 @@
       delay: "{{ wait_delay | default(5) }}"
       retries: 360
       loop:
-        - test_node_name_firefox
-        - test_node_name_chrome
+        - "{{ test_node_name_firefox }}"
+        - "{{ test_node_name_chrome }}"
     - name: "remove test containers"
       docker_container:
         docker_host: "unix://tmp/docker.sock"
         name: "{{ item }}"
         state: "absent"
       loop:
-        - test_node_name_firefox
-        - test_node_name_chrome
-        - test_container_name
+        - "{{ test_node_name_firefox }}"
+        - "{{ test_node_name_chrome }}"
+        - "{{ test_container_name }}"
