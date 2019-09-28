@@ -9,10 +9,10 @@ docker_shm_size: "1g"                                                       # ra
 
 service_selenium_grid_timeout: "10"                                         # grid timeout
 service_selenium_grid_debug: "false"                                        # grid debug mode
-service_selenium_grid_debug_vncport: "5999"                                 # vnc port for monitoring sessions if not headless
+service_selenium_grid_debug_vncport: "5900"                                 # vnc port for monitoring sessions if not headless
 service_selenium_grid_xvfb: "false"                                         # run in headless mode
 service_selenium_grid_http_port: "4444"                                     # port to expose hub on
-service_selenium_grid_host: "0.0.0.0"                                       # public address for hub
+service_selenium_grid_host: "localhost"                                       # public address for hub
 service_selenium_grid_status_service: "/wd/hub/status"                      # status page for hub
 service_selenium_grid_status_schema: "http"                                 # hub schema
 service_selenium_grid_status_url: "{{ service_selenium_grid_status_schema }}\
@@ -45,7 +45,6 @@ docker_published_ports: [                                                       
 docker_volumes: [                                                                         # default valums
   "/dev/shm:/dev/shm"
 ]
-
 
 wait_delay: 1                                                             # how long to wait between retries
 docker_host: "unix://var/run/docker.sock"                                 # host where to run the docker container for executing pyaem2 commands
