@@ -11,19 +11,21 @@
     name: "{{ docker_container_name }}"
     image: "{{ docker_image }}{% if docker_image %}:{% endif %}{{ docker_image_tag }}"
     published_ports: "{{ docker_published_ports }}"
-    env:
-      TZ: "{{ docker_timezone }}"
-      GRID_TIMEOUT: "{{ service_selenium_grid_timeout | default(10) }}"
+    volumes: "{{ docker_volumes }}"
+    docker_host: "{{ docker_host }}"
+    shm_size: "{{ docker_shm_size }}"
+    env: "{{ docker_env }}"
+    healthcheck: "{{ service_selenium_grid_healthcheck }}"
   tags:
     - docker-container
 
-- name: wait until service is ready {{ role_comment }} http://{{ service_selenium_grid_host }}:{{ service_selenium_grid_http_port }}/wd/hub/status
+- name: wait until service is ready {{ role_comment }} @ {{ service_selenium_grid_status_url }}
   uri:
-    url: "http://{{ service_selenium_grid_host }}:{{ service_selenium_grid_http_port }}/wd/hub/status"
+    url: "{{ service_selenium_grid_status_url }}"
     return_content: true
-    timeout: 300
+    timeout: 5
   register: service_console
-  until: (service_console.content.find("Hub has capacity") != -1) or (service_console.content.find("No spare hub capacity") != -1)
+  until: service_selenium_grid_status_ready in service_console.content
   delay: "{{ wait_delay | default(5) }}"
   retries: 360
   tags:
