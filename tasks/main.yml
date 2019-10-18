@@ -15,17 +15,17 @@
     docker_host: "{{ docker_host }}"
     shm_size: "{{ docker_shm_size }}"
     env: "{{ docker_env }}"
-    healthcheck: "{{ service_selenium_grid_healthcheck }}"
+    healthcheck: "{{ grid_healthcheck }}"
   tags:
     - docker-container
 
-- name: wait until service is ready {{ role_comment }} @ {{ service_selenium_grid_status_url }}
+- name: wait until service is ready {{ role_comment }} @ {{ grid_status_url }}
   uri:
-    url: "{{ service_selenium_grid_status_url }}"
+    url: "{{ grid_status_url }}"
     return_content: true
     timeout: 5
-  register: service_console
-  until: service_selenium_grid_status_ready in service_console.content
+  register: console
+  until: grid_status_ready in console.content
   delay: "{{ wait_delay | default(5) }}"
   retries: 360
   tags:

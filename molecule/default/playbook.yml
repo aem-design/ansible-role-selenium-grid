@@ -24,8 +24,8 @@
   roles:
     - {
       role: "{{ role_name }}",
-      service_selenium_grid_host: "{{ dockerhost_ip.stdout }}",
-      service_selenium_grid_http_port: "{{ test_grid_port }}",
+      grid_host: "{{ dockerhost_ip.stdout }}",
+      grid_http_port: "{{ test_grid_port }}",
       docker_container_name: "{{ test_container_name }}",
       docker_host: "unix://tmp/docker.sock",
       docker_volumes: [],
@@ -55,8 +55,8 @@
         url: "http://{{ dockerhost_ip.stdout }}:{{ test_grid_port }}/grid/console"
         return_content: true
         timeout: 300
-      register: service_console
-      until: test_node_name_firefox in service_console.content
+      register: console
+      until: test_node_name_firefox in console.content
       delay: "{{ wait_delay | default(5) }}"
       retries: 360
       loop:
