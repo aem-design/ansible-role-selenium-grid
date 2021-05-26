@@ -11,4 +11,7 @@ node_modules/
 *.iml
 .DS_Store
 .temp/
+
+.cache/
 *.log
+__pycache__/

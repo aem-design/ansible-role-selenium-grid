@@ -1,6 +1,7 @@
 ---
 galaxy_info:
-  role_name: selenium-grid
+  role_name: selenium_grid
+  namespace: aem_design
   author: Max Barrass
   description: Setup Selenium Grid to test your services.
   company: aem.design

@@ -3,16 +3,22 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
-  options:
-    config-file: molecule/default/yaml-lint.yml
+lint: |
+  set -e
+  echo "RUNNING: yamllint..."
+  yamllint .
+  echo "RUNNING: ansible-lint..."
+  ansible-lint .
+  echo "RUNNING: autopep8..."
+  autopep8 -i -r ./library/*.py .
+  echo "RUNNING: flake8..."
+  flake8 .
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
+  log: true
+  options:
+    vvv: true
   playbooks:
-    prepare: prepare.yml
     converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
   inventory:
     group_vars:
@@ -20,7 +26,7 @@ provisioner:
         role_name: "${ROLE_NAME_FULL}"
 platforms:
   - name: instance
-    image: "aemdesign/ansible-playbook:${MOLECULE_DISTRO:-centos7}"
+    image: "aemdesign/ansible-playbook:centos7"
     command: ${MOLECULE_DOCKER_COMMAND:-"/usr/lib/systemd/systemd"}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
@@ -36,7 +42,7 @@ scenario:
     - destroy
     - syntax
     - create
-    - prepare
+    # - prepare
     - converge
     #    - idempotence
     - side_effect
@@ -45,5 +51,3 @@ scenario:
     - destroy
 verifier:
   name: testinfra
-  lint:
-    name: flake8
